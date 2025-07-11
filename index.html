@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Global Time Zone Converter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Global Time Zone Converter</h1>
+    <p>Effortlessly coordinate meetings across cities and time zones. Select locations to view their current times side by side.</p>
+  </header>
+  <main>
+    <section class="converter">
+      <div class="base-selector">
+        <label for="base-country">Base Country/Time Zone</label>
+        <select id="base-country">
+          <option value="" disabled selected>Select a country or capital...</option>
+          <!-- Options will be dynamically inserted -->
+        </select>
+        <div class="base-time" id="base-time">--:--</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-card">
+          <label for="compare1">Compare 1</label>
+          <select id="compare1">
+            <option value="" disabled selected>Select a country or capital...</option>
+            <!-- Options will be dynamically inserted -->
+          </select>
+          <div class="compare-time" id="compare-time1">--:--</div>
+        </div>
+        <div class="compare-card">
+          <label for="compare2">Compare 2</label>
+          <select id="compare2">
+            <option value="" disabled selected>Select a country or capital...</option>
+            <!-- Options will be dynamically inserted -->
+          </select>
+          <div class="compare-time" id="compare-time2">--:--</div>
+        </div>
+        <div class="compare-card">
+          <label for="compare3">Compare 3</label>
+          <select id="compare3">
+            <option value="" disabled selected>Select a country or capital...</option>
+            <!-- Options will be dynamically inserted -->
+          </select>
+          <div class="compare-time" id="compare-time3">--:--</div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer>
+    &copy; 2025 Global Teams Time Zone Converter
+  </footer>
+</body>
+</html>
