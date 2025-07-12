@@ -5,53 +5,70 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Global Time Zone Converter</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
- <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <header>
-    <h1>Global Time Zone Converter</h1>
-    <p>Effortlessly coordinate meetings across cities and time zones. Select locations to view their current times side by side.</p>
-  </header>
-  <main>
-    <section class="converter">
-      <div class="base-selector">
-        <label for="base-country">Base Country/Time Zone</label>
-        <select id="base-country">
-          <option value="" disabled selected>Select a country or capital...</option>
-          <!-- Options will be dynamically inserted -->
-        </select>
-        <div class="base-time" id="base-time">--:--</div>
+<body id="body">
+  <div id="main-wrapper" >
+    <header>
+      <h1>Global Time Zone Converter</h1>
+      <p>Effortlessly coordinate meetings across cities and time zones. Select locations to view their current times side by side.</p>
+    </header>
+    <main id="main">
+      <section class="converter">
+        <div class="base-selector">
+          <label for="base-country">Base Country/Time Zone</label>
+          <select id="base-country">
+            <option value="" disabled selected>Select a Country...</option>
+            <!-- Options will be dynamically inserted -->
+          </select>
+          <div class="base-time" id="base-time">--:--</div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-card">
+            <label for="compare1">Compare 1</label>
+            <select id="compare1">
+              <option value="" disabled selected>Select a Country...</option>
+              <!-- Options will be dynamically inserted -->
+            </select>
+            <div class="compare-time" id="compare-time1">--:--</div>
+          </div>
+          <div class="compare-card">
+            <label for="compare2">Compare 2</label>
+            <select id="compare2">
+              <option value="" disabled selected>Select a Country...</option>
+              <!-- Options will be dynamically inserted -->
+            </select>
+            <div class="compare-time" id="compare-time2">--:--</div>
+          </div>
+          <div class="compare-card">
+            <label for="compare3">Compare 3</label>
+            <select id="compare3">
+              <option value="" disabled selected>Select a Country...</option>
+              <!-- Options will be dynamically inserted -->
+            </select>
+            <div class="compare-time" id="compare-time3">--:--</div>
+          </div>
+        </div>
+        <button id="convert-btn" class="convert-btn">Convert</button>
+      </section>
+    </main>
+    <section class="coming-soon">
+      <div class="coming-soon-header">
+        <span class="coming-soon-icon">🚀</span>
+        <h2>Coming Soon</h2>
       </div>
-      <div class="compare-row">
-        <div class="compare-card">
-          <label for="compare1">Compare 1</label>
-          <select id="compare1">
-            <option value="" disabled selected>Select a country or capital...</option>
-            <!-- Options will be dynamically inserted -->
-          </select>
-          <div class="compare-time" id="compare-time1">--:--</div>
-        </div>
-        <div class="compare-card">
-          <label for="compare2">Compare 2</label>
-          <select id="compare2">
-            <option value="" disabled selected>Select a country or capital...</option>
-            <!-- Options will be dynamically inserted -->
-          </select>
-          <div class="compare-time" id="compare-time2">--:--</div>
-        </div>
-        <div class="compare-card">
-          <label for="compare3">Compare 3</label>
-          <select id="compare3">
-            <option value="" disabled selected>Select a country or capital...</option>
-            <!-- Options will be dynamically inserted -->
-          </select>
-          <div class="compare-time" id="compare-time3">--:--</div>
-        </div>
-      </div>
+      <ul>
+        <li><strong>Saved Locations & Presets:</strong> Quickly access your most-used cities and countries.</li>
+        <li><strong>Meeting & Event Scheduler:</strong> Plan global meetings with optimal times for all participants.</li>
+        <li><strong>Interactive Time Zone Map:</strong> Visualize world time differences at a glance.</li>
+        <li><strong>Daylight Saving Time Alerts:</strong> Get notified about upcoming DST changes in your selected locations.</li>
+      </ul>
     </section>
-  </main>
-  <footer>
-    &copy; 2025 Global Teams Time Zone Converter
-  </footer>
+    <footer>
+      &copy; 2025 Global Teams Time Zone Converter
+    </footer>
+  </div>
+    <div id="loading" class="loading-text">Loading...</div>
+  <script src="script.js"></script>
 </body>
 </html>
