@@ -23,7 +23,7 @@ const hider=()=>{
         loading.style.display="none"
         body.style.background="linear-gradient(135deg, #e0e7ff 0%, #f8fafc 100%)"
 }
- 
+ shower()
       fetch("https://countriesnow.space/api/v0.1/countries/capital")
       .then(res=>res.json())
       .then(data=>{
@@ -39,6 +39,9 @@ const hider=()=>{
           }
           
       })
+    setTimeout(() => {
+        hider()
+    }, 4000);
  btn.addEventListener("click",(()=>{
      let counters=5
    shower()
