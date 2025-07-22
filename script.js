@@ -1,5 +1,5 @@
-const baseCountry = document.getElementById('base-country'),
-      baseTime = document.getElementById('base-time'),
+const compare4 = document.getElementById('compare4'),
+      compareTime4 = document.getElementById('compare-time4'),
       compare1 = document.getElementById('compare1'),
       compareTime1 = document.getElementById('compare-time1'),
       compare2 = document.getElementById('compare2'),
@@ -32,7 +32,7 @@ const hider=()=>{
           if(data.data.capital===""){
               continue;
           }
-              baseCountry.innerHTML+=`<option>${data.data[i].name}</option>`
+              compare4.innerHTML+=`<option>${data.data[i].name}</option>`
               compare3.innerHTML+=`<option>${data.data[i].name}</option>`
               compare2.innerHTML+=`<option>${data.data[i].name}</option>`
               compare1.innerHTML+=`<option>${data.data[i].name}</option>`
@@ -54,22 +54,6 @@ const hider=()=>{
           
         }, 1000);
          counter.innerText=""
-    fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${baseCountry.value}&appid=d99bff6286cc266251816e686344a5f3`).then(
-        res=>res.json()
-    ).then(data=>{
-        console.log(data)
-           fetch(`http://api.timezonedb.com/v2.1/get-time-zone?key=9SCC73ZVOL18&format=json&by=position&lat=${data[0].lat}&lng=${data[0].lon}`)
-    .then(res=>res.json())
-    .then(data=>{
-        console.log(data)
-        baseTime.innerText=data.formatted
-    })
-    }
-
-    ).catch(err=>{
-        alert("Please make sure you typed correctly")
-    })
-   
     setTimeout(() => {
         fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${compare1.value}&appid=d99bff6286cc266251816e686344a5f3`).then(
         res=>res.json()
@@ -115,6 +99,21 @@ const hider=()=>{
 
     )
     }, 4000);
+    setTimeout(() => {
+        fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${compare4.value}&appid=d99bff6286cc266251816e686344a5f3`).then(
+        res=>res.json()
+    ).then(data=>{
+        console.log(data)
+           fetch(`http://api.timezonedb.com/v2.1/get-time-zone?key=9SCC73ZVOL18&format=json&by=position&lat=${data[0].lat}&lng=${data[0].lon}`)
+    .then(res=>res.json())
+    .then(data=>{
+        console.log(data)
+        compareTime4.innerText=data.formatted
+    })
+    }
+
+    )
+    }, 5000);
     setTimeout(() => {
        
         hider()
