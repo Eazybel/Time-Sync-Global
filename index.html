@@ -8,46 +8,80 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body id="body">
-  <div id="main-wrapper" >
+  <div id="main-wrapper">
     <header>
       <h1>Global Time Zone Converter</h1>
       <p>Effortlessly coordinate meetings across cities and time zones. Select locations to view their current times side by side.</p>
     </header>
+    
     <main id="main">
+      <section class="base-config-section">
+        <h2>Set Your Base Reference</h2>
+        <div class="base-config-row">
+          <div class="input-group">
+            <label for="base-location">Base Location</label>
+            <select id="base-location">
+              <option value="" disabled selected>Select Base Country...</option>
+              </select>
+          </div>
+          <div class="input-group">
+            <label for="base-datetime">Date & Time</label>
+            <input type="datetime-local" id="base-datetime">
+          </div>
+        </div>
+      </section>
+
       <section class="converter">
+        <h2>Target Locations</h2>
         <div class="compare-row">
           <div class="compare-card">
             <label for="compare1">Location 1</label>
             <select id="compare1">
               <option value="" disabled selected>Select a Country...</option>
-              </select>
-            <div class="compare-time" id="compare-time1">--:--</div>
+            </select>
+            <div class="card-display-output">
+              <div class="compare-time" id="compare-time1">--:--</div>
+              <div class="compare-date" id="compare-date1">---, --- --, ----</div>
+            </div>
           </div>
+          
           <div class="compare-card">
             <label for="compare2">Location 2</label>
             <select id="compare2">
               <option value="" disabled selected>Select a Country...</option>
-              </select>
-            <div class="compare-time" id="compare-time2">--:--</div>
+            </select>
+            <div class="card-display-output">
+              <div class="compare-time" id="compare-time2">--:--</div>
+              <div class="compare-date" id="compare-date2">---, --- --, ----</div>
+            </div>
           </div>
+          
           <div class="compare-card">
             <label for="compare3">Location 3</label>
             <select id="compare3">
               <option value="" disabled selected>Select a Country...</option>
-              </select>
-            <div class="compare-time" id="compare-time3">--:--</div>
+            </select>
+            <div class="card-display-output">
+              <div class="compare-time" id="compare-time3">--:--</div>
+              <div class="compare-date" id="compare-date3">---, --- --, ----</div>
+            </div>
           </div>
+          
           <div class="compare-card">
             <label for="compare4">Location 4</label>
             <select id="compare4">
               <option value="" disabled selected>Select a Country...</option>
-              </select>
-            <div class="compare-time" id="compare-time4">--:--</div>
+            </select>
+            <div class="card-display-output">
+              <div class="compare-time" id="compare-time4">--:--</div>
+              <div class="compare-date" id="compare-date4">---, --- --, ----</div>
+            </div>
           </div>
         </div>
-        <button id="convert-btn" class="convert-btn">Convert</button>
+        <button id="convert-btn" class="convert-btn">Convert Time</button>
       </section>
     </main>
+
     <section class="coming-soon">
       <div class="coming-soon-header">
         <span class="coming-soon-icon">🚀</span>
@@ -60,11 +94,13 @@
         <li><strong>Daylight Saving Time Alerts:</strong> Get notified about upcoming DST changes in your selected locations.</li>
       </ul>
     </section>
+
     <footer>
-      &copy; 2025 Global Teams Time Zone Converter
+      &copy; 2026 Global Teams Time Zone Converter
     </footer>
   </div>
-    <div id="loading" class="loading-text">Loading <span id="counter"></span> </div>
+  
+  <div id="loading" class="loading-text">Loading <span id="counter"></span></div>
   <script src="script.js"></script>
 </body>
 </html>
