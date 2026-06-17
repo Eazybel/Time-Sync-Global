@@ -2,105 +2,197 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Global Time Zone Converter</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Clean, Modern Utility Framework Built Directly In */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      margin: 0;
+      padding: 12px;
+      width: 460px;
+      background-color: #f9fafb;
+      color: #111827;
+    }
+    header h1 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #2563eb;
+      margin: 0 0 4px 0;
+    }
+    header p {
+      font-size: 12px;
+      color: #6b7280;
+      margin: 0;
+    }
+    h2 {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #4b5563;
+      border-bottom: 1px solid #e5e7eb;
+      padding-bottom: 4px;
+      margin: 15px 0 10px 0;
+    }
+    .card-row {
+      background: #ffffff;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #f3f4f6;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      display: flex;
+      gap: 10px;
+    }
+    .grid-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .card {
+      background: #ffffff;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #f3f4f6;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #4b5563;
+      margin-bottom: 4px;
+    }
+    input {
+      width: 100%;
+      padding: 6px;
+      font-size: 13px;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+      box-sizing: border-box;
+      background-color: #fff;
+    }
+    input:focus {
+      border-color: #2563eb;
+      outline: none;
+    }
+    .output-area {
+      margin-top: 6px;
+      padding-top: 8px;
+      border-top: 1px dashed #e5e7eb;
+      text-align: center;
+    }
+    .time-val {
+      font-size: 16px;
+      font-weight: 700;
+      color: #111827;
+    }
+    .date-val {
+      font-size: 11px;
+      color: #6b7280;
+      margin-top: 2px;
+    }
+    .btn {
+      width: 100%;
+      padding: 10px;
+      background-color: #2563eb;
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+    .btn:hover {
+      background-color: #1d4ed8;
+    }
+    footer {
+      font-size: 10px;
+      text-align: center;
+      color: #9ca3af;
+      margin-top: 15px;
+    }
+  </style>
 </head>
-<body id="body">
-  <div id="main-wrapper">
-    <header>
-      <h1>Global Time Zone Converter</h1>
-      <p>Effortlessly coordinate meetings across cities and time zones. Select locations to view their current times side by side.</p>
-    </header>
-    
-    <main id="main">
-      <section class="base-config-section">
-        <h2>Set Your Base Reference</h2>
-        <div class="base-config-row">
-          <div class="input-group">
-            <label for="base-location">Base Location</label>
-            <select id="base-location">
-              <option value="" disabled selected>Select Base Country...</option>
-              </select>
-          </div>
-          <div class="input-group">
-            <label for="base-datetime">Date & Time</label>
-            <input type="datetime-local" id="base-datetime">
-          </div>
-        </div>
-      </section>
+<body>
 
-      <section class="converter">
-        <h2>Target Locations</h2>
-        <div class="compare-row">
-          <div class="compare-card">
-            <label for="compare1">Location 1</label>
-            <select id="compare1">
-              <option value="" disabled selected>Select a Country...</option>
-            </select>
-            <div class="card-display-output">
-              <div class="compare-time" id="compare-time1">--:--</div>
-              <div class="compare-date" id="compare-date1">---, --- --, ----</div>
-            </div>
-          </div>
-          
-          <div class="compare-card">
-            <label for="compare2">Location 2</label>
-            <select id="compare2">
-              <option value="" disabled selected>Select a Country...</option>
-            </select>
-            <div class="card-display-output">
-              <div class="compare-time" id="compare-time2">--:--</div>
-              <div class="compare-date" id="compare-date2">---, --- --, ----</div>
-            </div>
-          </div>
-          
-          <div class="compare-card">
-            <label for="compare3">Location 3</label>
-            <select id="compare3">
-              <option value="" disabled selected>Select a Country...</option>
-            </select>
-            <div class="card-display-output">
-              <div class="compare-time" id="compare-time3">--:--</div>
-              <div class="compare-date" id="compare-date3">---, --- --, ----</div>
-            </div>
-          </div>
-          
-          <div class="compare-card">
-            <label for="compare4">Location 4</label>
-            <select id="compare4">
-              <option value="" disabled selected>Select a Country...</option>
-            </select>
-            <div class="card-display-output">
-              <div class="compare-time" id="compare-time4">--:--</div>
-              <div class="compare-date" id="compare-date4">---, --- --, ----</div>
-            </div>
-          </div>
-        </div>
-        <button id="convert-btn" class="convert-btn">Convert Time</button>
-      </section>
-    </main>
-
-    <section class="coming-soon">
-      <div class="coming-soon-header">
-        <span class="coming-soon-icon">🚀</span>
-        <h2>Coming Soon</h2>
-      </div>
-      <ul>
-        <li><strong>Saved Locations & Presets:</strong> Quickly access your most-used cities and countries.</li>
-        <li><strong>Meeting & Event Scheduler:</strong> Plan global meetings with optimal times for all participants.</li>
-        <li><strong>Interactive Time Zone Map:</strong> Visualize world time differences at a glance.</li>
-        <li><strong>Daylight Saving Time Alerts:</strong> Get notified about upcoming DST changes in your selected locations.</li>
-      </ul>
-    </section>
-
-    <footer>
-      &copy; 2026 Global Teams Time Zone Converter
-    </footer>
-  </div>
+  <header>
+    <h1>Global Time Zone Converter</h1>
+    <p>Coordinate meetings across cities side by side.</p>
+  </header>
   
-  <div id="loading" class="loading-text">Loading <span id="counter"></span></div>
+  <main>
+    <h2>Set Your Base Reference</h2>
+    <div class="card-row">
+      <div class="input-group">
+        <label for="base-location">Base Location (Searchable)</label>
+        <input type="text" id="base-location" list="timezone-list" placeholder="Type base country...">
+      </div>
+      <div class="input-group">
+        <label for="base-datetime">Date & Time</label>
+        <input type="datetime-local" id="base-datetime">
+      </div>
+    </div>
+
+    <h2>Target Locations (Convert to...)</h2>
+    <div class="grid-layout">
+      
+      <div class="card">
+        <label for="compare1">Location 1</label>
+        <input type="text" id="compare1" list="timezone-list" placeholder="Type country...">
+        <div class="output-area">
+          <div class="time-val" id="compare-time1">--:--</div>
+          <div class="date-val" id="compare-date1">---, --- --, ----</div>
+        </div>
+      </div>
+      
+      <div class="card">
+        <label for="compare2">Location 2</label>
+        <input type="text" id="compare2" list="timezone-list" placeholder="Type country...">
+        <div class="output-area">
+          <div class="time-val" id="compare-time2">--:--</div>
+          <div class="date-val" id="compare-date2">---, --- --, ----</div>
+        </div>
+      </div>
+      
+      <div class="card">
+        <label for="compare3">Location 3</label>
+        <input type="text" id="compare3" list="timezone-list" placeholder="Type country...">
+        <div class="output-area">
+          <div class="time-val" id="compare-time3">--:--</div>
+          <div class="date-val" id="compare-date3">---, --- --, ----</div>
+        </div>
+      </div>
+      
+      <div class="card">
+        <label for="compare4">Location 4</label>
+        <input type="text" id="compare4" list="timezone-list" placeholder="Type country...">
+        <div class="output-area">
+          <div class="time-val" id="compare-time4">--:--</div>
+          <div class="date-val" id="compare-date4">---, --- --, ----</div>
+        </div>
+      </div>
+
+    </div>
+    
+    <button id="convert-btn" class="btn">Convert Time</button>
+  </main>
+
+  <footer>
+    &copy; 2026 Global Teams Time Zone Converter
+  </footer>
+
+  <datalist id="timezone-list">
+  </datalist>
+
   <script src="script.js"></script>
 </body>
 </html>
