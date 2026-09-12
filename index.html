@@ -3,195 +3,136 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Global Time Zone Converter</title>
-  <style>
-    /* Clean, Modern Utility Framework Built Directly In */
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      margin: 0;
-      padding: 12px;
-      width: 460px;
-      background-color: #f9fafb;
-      color: #111827;
-    }
-    header h1 {
-      font-size: 18px;
-      font-weight: 700;
-      color: #2563eb;
-      margin: 0 0 4px 0;
-    }
-    header p {
-      font-size: 12px;
-      color: #6b7280;
-      margin: 0;
-    }
-    h2 {
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: #4b5563;
-      border-bottom: 1px solid #e5e7eb;
-      padding-bottom: 4px;
-      margin: 15px 0 10px 0;
-    }
-    .card-row {
-      background: #ffffff;
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px solid #f3f4f6;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-      display: flex;
-      gap: 10px;
-    }
-    .grid-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-    .card {
-      background: #ffffff;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #f3f4f6;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    .input-group {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-    }
-    label {
-      font-size: 11px;
-      font-weight: 600;
-      color: #4b5563;
-      margin-bottom: 4px;
-    }
-    input {
-      width: 100%;
-      padding: 6px;
-      font-size: 13px;
-      border: 1px solid #d1d5db;
-      border-radius: 4px;
-      box-sizing: border-box;
-      background-color: #fff;
-    }
-    input:focus {
-      border-color: #2563eb;
-      outline: none;
-    }
-    .output-area {
-      margin-top: 6px;
-      padding-top: 8px;
-      border-top: 1px dashed #e5e7eb;
-      text-align: center;
-    }
-    .time-val {
-      font-size: 16px;
-      font-weight: 700;
-      color: #111827;
-    }
-    .date-val {
-      font-size: 11px;
-      color: #6b7280;
-      margin-top: 2px;
-    }
-    .btn {
-      width: 100%;
-      padding: 10px;
-      background-color: #2563eb;
-      color: #ffffff;
-      border: none;
-      border-radius: 4px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 12px;
-    }
-    .btn:hover {
-      background-color: #1d4ed8;
-    }
-    footer {
-      font-size: 10px;
-      text-align: center;
-      color: #9ca3af;
-      margin-top: 15px;
-    }
-  </style>
+  <title>Time Sync Global</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <div class="app-shell">
+    <section class="extension-frame">
+      <header class="app-header">
+        <section class="brand">
+          <div class="brand-icon">
+            <svg viewBox="0 0 24 24" fill="none" aria-label="Time Sync Global logo">
+              <path d="M12 3a9 9 0 1 0 9 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              <path d="M12 7v5l3 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M4 4l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+          </div>
+          <div>
+            <span class="brand-kicker">Time Sync</span>
+            <h1>Global Converter</h1>
+          </div>
+        </section>
 
-  <header>
-    <h1>Global Time Zone Converter</h1>
-    <p>Coordinate meetings across cities side by side.</p>
-  </header>
-  
-  <main>
-    <h2>Set Your Base Reference</h2>
-    <div class="card-row">
-      <div class="input-group">
-        <label for="base-location">Base Location (Searchable)</label>
-        <input type="text" id="base-location" list="timezone-list" placeholder="Type base country...">
-      </div>
-      <div class="input-group">
-        <label for="base-datetime">Date & Time</label>
-        <input type="datetime-local" id="base-datetime">
-      </div>
-    </div>
+        <section class="header-actions">
+          <button class="icon-button" id="nowButton" title="Use current time">
+            <svg viewBox="0 0 24 24" fill="none" aria-label="Current time">
+              <path d="M12 8v4l3 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" />
+            </svg>
+          </button>
+        </section>
+      </header>
 
-    <h2>Target Locations (Convert to...)</h2>
-    <div class="grid-layout">
-      
-      <div class="card">
-        <label for="compare1">Location 1</label>
-        <input type="text" id="compare1" list="timezone-list" placeholder="Type country...">
-        <div class="output-area">
-          <div class="time-val" id="compare-time1">--:--</div>
-          <div class="date-val" id="compare-date1">---, --- --, ----</div>
-        </div>
-      </div>
-      
-      <div class="card">
-        <label for="compare2">Location 2</label>
-        <input type="text" id="compare2" list="timezone-list" placeholder="Type country...">
-        <div class="output-area">
-          <div class="time-val" id="compare-time2">--:--</div>
-          <div class="date-val" id="compare-date2">---, --- --, ----</div>
-        </div>
-      </div>
-      
-      <div class="card">
-        <label for="compare3">Location 3</label>
-        <input type="text" id="compare3" list="timezone-list" placeholder="Type country...">
-        <div class="output-area">
-          <div class="time-val" id="compare-time3">--:--</div>
-          <div class="date-val" id="compare-date3">---, --- --, ----</div>
-        </div>
-      </div>
-      
-      <div class="card">
-        <label for="compare4">Location 4</label>
-        <input type="text" id="compare4" list="timezone-list" placeholder="Type country...">
-        <div class="output-area">
-          <div class="time-val" id="compare-time4">--:--</div>
-          <div class="date-val" id="compare-date4">---, --- --, ----</div>
-        </div>
-      </div>
+      <main class="converter-content">
+        <section class="form-panel">
+          <section class="section-title">
+            <h2>Set Base Reference</h2>
+            <span class="section-tag" id="todayTag">Today</span>
+          </section>
 
-    </div>
-    
-    <button id="convert-btn" class="btn">Convert Time</button>
-  </main>
+          <section class="reference-grid">
+            <section class="form-field">
+              <label for="baseLocation">Base Location</label>
+              <input type="text" id="baseLocation" list="timezone-list" autocomplete="off" placeholder="Search location">
+            </section>
 
-  <footer>
-    &copy; 2026 Global Teams Time Zone Converter
-  </footer>
+            <section class="form-field">
+              <label for="baseDateTime">Date &amp; Time</label>
+              <input type="datetime-local" id="baseDateTime">
+            </section>
+          </section>
 
-  <datalist id="timezone-list">
-  </datalist>
+          <section class="section-title" style="margin-top: 20px;">
+            <h2>Target Locations</h2>
+            <span class="section-tag">4 Cities</span>
+          </section>
+
+          <section class="compare-grid">
+            <section class="compare-card">
+              <h3>Location 1</h3>
+              <section class="compare-location">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M12 21s8-7 8-12a8 8 0 0 0-16 0c0 5 8 12 8 12Z" stroke="currentColor" stroke-width="2" fill="none" />
+                  <circle cx="12" cy="9" r="3" stroke="currentColor" stroke-width="2" fill="none" />
+                </svg>
+                <span id="locationName1">New York</span>
+              </section>
+              <section class="compare-time" id="compareTime1">--:--</section>
+              <section class="compare-date" id="compareDate1">--</section>
+              <section class="compare-zone" id="compareZone1">America/New_York</section>
+            </section>
+
+            <section class="compare-card">
+              <h3>Location 2</h3>
+              <section class="compare-location">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M12 21s8-7 8-12a8 8 0 0 0-16 0c0 5 8 12 8 12Z" stroke="currentColor" stroke-width="2" fill="none" />
+                  <circle cx="12" cy="9" r="3" stroke="currentColor" stroke-width="2" fill="none" />
+                </svg>
+                <span id="locationName2">London</span>
+              </section>
+              <section class="compare-time" id="compareTime2">--:--</section>
+              <section class="compare-date" id="compareDate2">--</section>
+              <section class="compare-zone" id="compareZone2">Europe/London</section>
+            </section>
+
+            <section class="compare-card">
+              <h3>Location 3</h3>
+              <section class="compare-location">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M12 21s8-7 8-12a8 8 0 0 0-16 0c0 5 8 12 8 12Z" stroke="currentColor" stroke-width="2" fill="none" />
+                  <circle cx="12" cy="9" r="3" stroke="currentColor" stroke-width="2" fill="none" />
+                </svg>
+                <span id="locationName3">Dubai</span>
+              </section>
+              <section class="compare-time" id="compareTime3">--:--</section>
+              <section class="compare-date" id="compareDate3">--</section>
+              <section class="compare-zone" id="compareZone3">Asia/Dubai</section>
+            </section>
+
+            <section class="compare-card">
+              <h3>Location 4</h3>
+              <section class="compare-location">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M12 21s8-7 8-12a8 8 0 0 0-16 0c0 5 8 12 8 12Z" stroke="currentColor" stroke-width="2" fill="none" />
+                  <circle cx="12" cy="9" r="3" stroke="currentColor" stroke-width="2" fill="none" />
+                </svg>
+                <span id="locationName4">Singapore</span>
+              </section>
+              <section class="compare-time" id="compareTime4">--:--</section>
+              <section class="compare-date" id="compareDate4">--</section>
+              <section class="compare-zone" id="compareZone4">Asia/Singapore</section>
+            </section>
+          </section>
+
+          <section class="actions-row">
+            <button class="primary-button" id="convertBtn">Convert Time</button>
+            <button class="secondary-button" id="resetBtn">Reset</button>
+          </section>
+
+          <section class="status-line" id="statusLine"></section>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <span class="footer-dot"></span>
+        <span>Time Sync Global</span>
+      </footer>
+    </section>
+  </div>
+
+  <datalist id="timezone-list"></datalist>
 
   <script src="script.js"></script>
 </body>
