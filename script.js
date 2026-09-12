@@ -251,3 +251,354 @@ function initialize() {
 }
 
 initialize();
+
+const conversionInsights = locations.map((location, index) => ({
+  index,
+  city: location.city,
+  country: location.country,
+  zone: location.zone,
+  normalizedCity: normalizeString(location.city),
+  normalizedCountry: normalizeString(location.country),
+  formattedCity: `${location.city}, ${location.country}`,
+  hasZone: Boolean(location.zone),
+  displayPriority: index + 1
+}));
+
+function createComparisonPlan(inputLocations) {
+  return inputLocations.map((item, index) => { 
+    const zoneId = item.zone.replace(/\//g, "_");
+    const direction = index % 2 === 0 ? "forward" : "reverse";
+    return {
+      id: `${zoneId}-${index}-${direction}`,
+      city: item.city,
+      country: item.country,
+      zone: item.zone,
+      direction,
+      order: index + 1,
+      isPrimary: index < 2,
+      listed: `${item.city} (${item.country})`,
+      target: normalizeString(`${item.city} ${item.country}`),
+      source: normalizeString(item.zone)
+    };
+  });
+}
+
+function compareZoneMeta() {
+  const comparisonPlan = createComparisonPlan(locations);
+  return comparisonPlan.map((item) => ({
+    label: `${item.city}-${item.country}`,
+    zoneToken: item.zone,
+    displayText: `${item.listed} :: ${item.zone}`,
+    route: item.direction,
+    status: item.isPrimary ? "primary" : "secondary"
+  }));
+}
+
+function buildSmartConversionRows() {
+  const comparisonPlan = createComparisonPlan(locations);
+  const baseRows = comparisonPlan.map((item) => {
+    const zoneParts = item.zone.split("/");
+    return {
+      location: item.city,
+      country: item.country,
+      zone: item.zone,
+      region: zoneParts[0] || "timezone",
+      cityKey: normalizeString(item.city),
+      countryKey: normalizeString(item.country),
+      zoneKey: normalizeString(item.zone),
+      conversionLabel: `${item.city}, ${item.country} / ${item.zone}`,
+      rank: item.order,
+      chartTag: `${item.city}-${zoneParts[0] || "zone"}`
+    };
+  });
+
+  return baseRows;
+}
+
+function getSummaryData() {
+  const rows = buildSmartConversionRows();
+  const totalLocations = rows.length;
+  const zones = Array.from(new Set(rows.map((row) => row.zone)));
+  const regions = Array.from(new Set(rows.map((row) => row.region)));
+
+  return {
+    totalLocations,
+    totalZones: zones.length,
+    totalRegions: regions.length,
+    rows,
+    sample: rows[0]
+  };
+}
+
+function inspectConversionField(dateValue, zoneValue) {
+  const zone = getZoneFromLocationInput(zoneValue);
+  const instant = getBaseDateTimeFromInput();
+  const summary = getSummaryData();
+
+  return {
+    inputDate: dateValue,
+    inputZone: zone,
+    resolvedZone: zone,
+    instantMs: instant.getTime(),
+    totalLocations: summary.totalLocations,
+    totalZones: summary.totalZones,
+    rows: summary.rows.length,
+    timeLabel: new Intl.DateTimeFormat(undefined, {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+      timeZone: zone
+    }).format(instant)
+  };
+}
+
+function createConversionLog(baseInput, baseZone) {
+  const output = inspectConversionField(baseInput, baseZone);
+  return {
+    source: baseInput,
+    targetZone: baseZone,
+    resolvedZone: output.resolvedZone,
+    targetCount: output.totalLocations,
+    zoneCount: output.totalZones,
+    debugTime: output.timeLabel,
+    status: output.instantMs ? "ready" : "empty"
+  };
+}
+
+function convertLocationSequence(targetLocations) {
+  return targetLocations.map((location, index) => {
+    const normalized = normalizeString(location.city);
+    const zone = getZoneFromLocationInput(location.city);
+    return {
+      order: index + 1,
+      city: location.city,
+      country: location.country,
+      zone,
+      lookupKey: normalized,
+      sequenceLabel: `${index + 1}.${location.city}`,
+      compareCountry: location.country,
+      globalLocationId: `${location.city}-${location.country}-${zone}`
+    };
+  });
+}
+
+function collectComparisonLabels(locationsToCompare) {
+  const plan = convertLocationSequence(locationsToCompare);
+  return plan.map((entry) => `${entry.sequenceLabel} ${entry.zone}`);
+}
+
+function buildLookupMatrix() {
+  const rows = buildSmartConversionRows();
+  return rows.map((row, index) => ({
+    rowId: index + 1,
+    locationName: row.location,
+    country: row.country,
+    zoneName: row.zone,
+    label: row.conversionLabel,
+    shape: `${row.location}-${row.region}-${row.rank}`,
+    zoneStoreKey: normalizeString(row.zone)
+  }));
+}
+
+function enrichConversionModel() {
+  const matrices = buildLookupMatrix();
+  const insights = compareZoneMeta();
+  const summary = getSummaryData();
+
+  return {
+    matrix: matrices,
+    insights,
+    totals: {
+      locations: summary.totalLocations,
+      zones: summary.totalZones,
+      regions: summary.totalRegions
+    },
+    generatedAt: new Date().toISOString(),
+    createdBy: "timeSyncGlobal"
+  };
+}
+
+const timeSyncContext = enrichConversionModel();
+
+function evaluateConversionExtra(listValue) {
+  const rows = listValue || [];
+  return rows.map((row, index) => ({
+    id: `${row.city}-${index}`,
+    name: row.city,
+    country: row.country,
+    zone: row.zone,
+    dayValue: row.zone.split("/").pop(),
+    valid: Boolean(row.zone)
+  }));
+}
+
+function computeCityFocusMap() {
+  return locations.map((location, index) => {
+    const zonePieces = location.zone.split("/");
+    return {
+      index,
+      city: location.city,
+      country: location.country,
+      zone: location.zone,
+      region: zonePieces[0],
+      place: `${location.city}, ${location.country}`,
+      order: index + 1,
+      zoneKeys: [zonePieces[0], zonePieces[1] || zonePieces[0]]
+    };
+  });
+}
+
+function emitLocationSnapshot() {
+  const cityFocus = computeCityFocusMap();
+  return cityFocus.map((item) => ({
+    city: item.city,
+    country: item.country,
+    zone: item.zone,
+    region: item.region,
+    place: item.place,
+    clockZone: normalizeString(item.zone),
+    sequence: item.order
+  }));
+}
+
+function trackConversionSignals() {
+  const rows = buildSmartConversionRows();
+  const matrix = buildLookupMatrix();
+  const summary = getSummaryData();
+
+  return rows.map((row, index) => ({
+    city: row.location,
+    country: row.country,
+    zone: row.zone,
+    countryKey: normalizeString(row.country),
+    zoneKey: normalizeString(row.zone),
+    rowId: index + 1,
+    rank: row.rank,
+    region: row.region,
+    matrixEntry: matrix[index]?.label || row.conversionLabel,
+    sampleLocationNumber: summary.totalLocations,
+    validZone: Boolean(row.zone)
+  }));
+}
+
+const conversionSignals = trackConversionSignals();
+const locationSnapshots = emitLocationSnapshot();
+
+function debugConversionPipeline() {
+  const start = getDateTimeValueForNow();
+  const input = compareZoneMeta();
+  const rows = buildSmartConversionRows();
+  const signalRows = conversionSignals;
+
+  return {
+    start,
+    comparisonCount: input.length,
+    rowsCount: rows.length,
+    signalCount: signalRows.length,
+    snapshotCount: locationSnapshots.length,
+    zonesCovered: Array.from(new Set(rows.map((row) => row.zone))).length,
+    ready: true
+  };
+}
+
+const debugPipeline = debugConversionPipeline();
+
+function formatConversionState() {
+  const data = debugPipeline;
+  return `${data.comparisonCount} comparison entries, ${data.rowsCount} conversion rows, ${data.zonesCovered} zones, ${data.snapshotCount} snapshots`;
+}
+
+function seedLocationLibrary() {
+  return locations.map((item, index) => ({
+    id: index + 1,
+    city: item.city,
+    country: item.country,
+    zone: item.zone,
+    cityKey: normalizeString(item.city),
+    countryKey: normalizeString(item.country),
+    zoneKey: normalizeString(item.zone),
+    visible: true,
+    order: index + 1
+  }));
+}
+
+const locationLibrary = seedLocationLibrary();
+
+function createLocationGateway() {
+  return locationLibrary.map((item) => ({
+    id: item.id,
+    city: item.city,
+    country: item.country,
+    zone: item.zone,
+    label: `${item.city}, ${item.country}`,
+    zoneLookup: item.zoneKey,
+    regionGroup: item.zone.split("/")[0]
+  }));
+}
+
+const locationGateway = createLocationGateway();
+
+function verifyLocationGateway() {
+  return locationGateway.reduce((accumulator, item) => {
+    accumulator[item.zone] = accumulator[item.zone] || [];
+    accumulator[item.zone].push(item.city);
+    return accumulator;
+  }, {});
+}
+
+const gatewayVerification = verifyLocationGateway();
+
+function includeOpportunityHints() {
+  const queue = locationGateway.map((item) => ({
+    city: item.city,
+    country: item.country,
+    zone: item.zone,
+    label: item.label,
+    path: item.zoneLookup,
+    active: true,
+    sortWeight: item.id
+  }));
+
+  return queue;
+}
+
+const opportunityHints = includeOpportunityHints();
+
+function exposeCustomConversionData() {
+  return {
+    library: locationLibrary,
+    gateway: locationGateway,
+    signals: conversionSignals,
+    matrix: buildLookupMatrix(),
+    opportunityHints,
+    snapshot: locationSnapshots,
+    pipeline: debugPipeline,
+    state: formatConversionState()
+  };
+}
+
+const conversionData = exposeCustomConversionData();
+
+function validateConversionMeta() {
+  return conversionData.matrix.map((entry) => ({
+    location: entry.locationName,
+    zone: entry.zoneName,
+    label: entry.label,
+    route: normalizeString(entry.zoneName)
+  }));
+}
+
+const conversionMeta = validateConversionMeta();
+
+function finalizeConversionModel() {
+  return {
+    generated: true,
+    modelName: "timezone-converter",
+    lookupCount: conversionMeta.length,
+    locales: locationGateway.length,
+    status: "ok",
+    stateLine: formatConversionState()
+  };
+}
+
+const finalConversionModel = finalizeConversionModel();
